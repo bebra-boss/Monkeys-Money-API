@@ -174,6 +174,35 @@ def create_signature(data: dict, secret_key: str) -> tuple[str, str]:
 
 
 
+#### 2. Получение информации мерчанта
+
+**GET** `/api/v1/merchant/get/info`
+
+**Права доступа**: `IsMerchant`
+
+**Описание**: Возвращает сводную информацию о мерчанте и показатели кошелька.
+
+**Параметры запроса**: отсутствуют
+
+**Схема ответа** (`MerchantDashboard`):
+```json
+{
+  "info": {
+    "name": "MerchantName",
+    "webhook": "https://your.webhook/endpoint",
+    "conversion_rate": 1.23,
+    "extradition_rate": 0.95,
+    "email": "user@example.com"
+  },
+  "wallet": {
+    "settle_limit": 1000,
+    "all_settles": 50000,
+    "balance": 1234.56
+  }
+}
+```
+
+
 #### 3. Получение транзакции по ID
 
 **GET** `/api/v1/merchant/get/transaction?transaction_id=uuid`
@@ -230,7 +259,29 @@ def create_signature(data: dict, secret_key: str) -> tuple[str, str]:
 }
 ```
 
-#### 5. Получение timestamp
+#### 5. Получение списка банков
+
+**GET** `/api/v1/merchant/banks`
+
+**Права доступа**: `IsMerchant`
+
+**Описание**: Получает список доступных банков для создания транзакций
+
+**Схема ответа**:
+```json
+[
+  {
+    "id": 1,
+    "name": "Сбербанк"
+  },
+  {
+    "id": 2,
+    "name": "Тинькофф"
+  }
+]
+```
+
+#### 6. Получение timestamp
 
 **GET** `/api/v1/merchant/timestamp`
 
