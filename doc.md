@@ -14,7 +14,7 @@ API v1 предоставляет интерфейс для работы с пл
 
 **Примеры полных URL**:
 - Создание транзакции: `https://platform.mmgatepay.net/monkey/api/v1/merchant/create/transaction`
-- Создание диспута: `https://platform.mmgatepay.net/monkey/api/v1/dispute/create/dispute`
+- Создание диспута: `https://platform.mmgatepay.net/monkey/api/v1/dispute/create`
 - Тест API: `https://platform.mmgatepay.net/monkey/api/v1/test/create/transaction`
 
 ## Аутентификация и подписи
@@ -361,7 +361,7 @@ def create_signature(data: dict, secret_key: str) -> tuple[str, str]:
 
 #### 1. Создание спора
 
-**POST** `/api/v1/dispute/create/dispute`
+**POST** `/api/v1/dispute/create`
 
 **Права доступа**: `IsMerchant`
 
