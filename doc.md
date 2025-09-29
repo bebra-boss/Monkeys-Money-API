@@ -379,10 +379,10 @@ curl -X POST "https://platform.mmgatepay.net/monkey/api/v1/dispute/create/disput
 - `card` - Банковская карта (order_type = 1)
 - `sbp` - Система быстрых платежей (order_type = 2)
 - `transgran` - Трансгран (order_type = 3)
-- `apay` - APay (order_type = 4)
-- `spay` - SPay (order_type = 5)
-- `tpay` - TPay (order_type = 6)
-- `opay` - OPay (order_type = 7)
+- `apay` - Alpha-Alpha (order_type = 4)
+- `spay` - Sber-Sber (order_type = 5)
+- `tpay` - Tbank-Tbank (order_type = 6)
+- `opay` - Ozon-Ozon (order_type = 7)
 
 ## Обработка ошибок
 
