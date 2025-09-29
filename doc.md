@@ -296,10 +296,6 @@ def create_signature(data: dict, secret_key: str) -> tuple[str, str]:
 
 ---
 
-## Test Router
-
-Раздел удален. Тестирование проводится через мерчанта со статусом `test`.
-
 ## Dispute Router (`/api/v1/dispute`)
 
 ### Эндпоинты
