@@ -147,7 +147,7 @@ def create_signature(data: dict, secret_key: str) -> tuple[str, str]:
 **Поля запроса**:
 - `amount` (int required): Сумма сделки, минимум 1000
 - `currency` (str required): Валюта сделки, максимум 5 символов
-- `order_type` (int required): Тип сделки (1 - карта, 2 - СБП, 3 - трансгран, 4 - apay, 5 - spay, 6 - tpay, 7 - opay)
+- `order_type` (int required): Тип сделки (1 - карта, 2 - СБП, 3 - трансгран, 4 - alphpa-alpha, 5 - sber-sber, 6 - tbank-tbank, 7 - ozon-ozon)
 - `bank` (str | ""): Банк, максимум 10 символов
 - `user_id` (str optional): ID пользователя
 - `back_url` (str optional): Ссылка на возврат
