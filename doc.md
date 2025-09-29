@@ -2,20 +2,18 @@
 
 ## Обзор
 
-API v1 предоставляет интерфейс для работы с платежным агрегатором. Включает в себя операции с транзакциями, спорами и тестирование.
+API v1 предоставляет интерфейс для работы с платежным агрегатором. Включает операции с транзакциями и спорами.
 
 ## Базовые URL
 
 **Production**:
 - Base URL: `https://platform.mmgatepay.net/monkey`
 - Merchant API: `/api/v1/merchant`
-- Test API: `/api/v1/test`  
 - Dispute API: `/api/v1/dispute`
 
 **Примеры полных URL**:
 - Создание транзакции: `https://platform.mmgatepay.net/monkey/api/v1/merchant/create/transaction`
 - Создание диспута: `https://platform.mmgatepay.net/monkey/api/v1/dispute/create`
-- Тест API: `https://platform.mmgatepay.net/monkey/api/v1/test/create/transaction`
 
 ## Аутентификация и подписи
 
@@ -147,12 +145,12 @@ def create_signature(data: dict, secret_key: str) -> tuple[str, str]:
 ```
 
 **Поля запроса**:
-- `amount` (int): Сумма сделки, минимум 1000
-- `currency` (str): Валюта сделки, максимум 5 символов
-- `order_type` (int): Тип сделки (1 - карта, 2 - СБП)
-- `bank` (str): Банк, максимум 10 символов
-- `user_id` (str): ID пользователя
-- `back_url` (str): Ссылка на возврат
+- `amount` (int required): Сумма сделки, минимум 1000
+- `currency` (str required): Валюта сделки, максимум 5 символов
+- `order_type` (int required): Тип сделки (1 - карта, 2 - СБП, 3 - трансгран, 4 - apay, 5 - spay, 6 - tpay, 7 - opay)
+- `bank` (str | ""): Банк, максимум 10 символов
+- `user_id` (str optional): ID пользователя
+- `back_url` (str optional): Ссылка на возврат
 
 **Схема ответа** (`TransactionResponse`):
 ```json
@@ -298,62 +296,9 @@ def create_signature(data: dict, secret_key: str) -> tuple[str, str]:
 
 ---
 
-## Test Router (`/api/v1/test`)
+## Test Router
 
-### Права доступа
-
-- `IsTestRoute` - специальная аутентификация для тестовой среды
-
-### Тестовые учетные данные
-
-- **Public Key**: `dad0fffa-1047-4687-b41c-1a9004ca661a`
-- **Secret Key**: `UOJyDVvwRSWuVfNNQmKIljxTlGsoRg`
-
-### Эндпоинты
-
-#### 1. Создание тестовой транзакции
-
-**POST** `/api/v1/test/create/transaction`
-
-**Права доступа**: `IsTestRoute`
-
-**Описание**: Создает тестовую транзакцию с фиксированными параметрами
-
-**Схема запроса**: `TransactionRequest` (см. Merchant Router)
-
-**Схема ответа**: `TransactionResponse` с тестовыми данными
-
-#### 2. Получение тестовой транзакции
-
-**GET** `/api/v1/test/get/transaction?transaction_id=uuid`
-
-**Права доступа**: `IsTestRoute`
-
-**Описание**: Получает информацию о тестовой транзакции
-
-**Параметры запроса**:
-- `transaction_id` (str): ID транзакции
-
-**Схема ответа**: `TransactionResponse` с тестовыми данными
-
-#### 3. Тестовый callback
-
-**POST** `/api/v1/test/callback`
-
-**Права доступа**: `IsTestRoute`
-
-**Описание**: Симулирует успешный callback
-
-**Схема ответа**:
-```json
-{
-  "id": "123e4567-e89b-12d3-a456-426614174000",
-  "status": "cancelled | completed ",
-  "timestamp":134566
-}
-```
-
----
+Раздел удален. Тестирование проводится через мерчанта со статусом `test`.
 
 ## Dispute Router (`/api/v1/dispute`)
 
@@ -437,6 +382,11 @@ curl -X POST "https://platform.mmgatepay.net/monkey/api/v1/dispute/create/disput
 
 - `card` - Банковская карта (order_type = 1)
 - `sbp` - Система быстрых платежей (order_type = 2)
+- `transgran` - Трансгран (order_type = 3)
+- `apay` - APay (order_type = 4)
+- `spay` - SPay (order_type = 5)
+- `tpay` - TPay (order_type = 6)
+- `opay` - OPay (order_type = 7)
 
 ## Обработка ошибок
 
@@ -908,25 +858,3 @@ if __name__ == "__main__":
 ```
 
 ---
-
-## Рекомендации по интеграции
-
-1. **Безопасность**:
-   - Храните секретные ключи в безопасном месте
-   - Используйте HTTPS для всех запросов
-   - Проверяйте подписи webhook'ов
-
-2. **Надежность**:
-   - Реализуйте retry механизм для неуспешных запросов
-   - Логируйте все API вызовы
-   - Используйте timestamp для предотвращения replay атак
-
-3. **Тестирование**:
-   - Используйте test router для отладки
-   - Проверьте все возможные статусы транзакций
-   - Протестируйте обработку ошибок
-
-4. **Мониторинг**:
-   - Отслеживайте время ответа API
-   - Мониторьте количество ошибок
-   - Настройте алерты для критических событий
